@@ -1,0 +1,6 @@
+<%= form_with model: task do |f| %>
+  <%= f.text_field :title, placeholder: "Task title..." %>
+  <%= f.text_area :description, placeholder: "Description..." %>
+  <%= f.hidden_field :status, value: "todo" %>
+  <%= f.submit "Add Task" %>
+<% end %>

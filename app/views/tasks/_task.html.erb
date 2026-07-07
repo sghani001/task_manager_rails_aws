@@ -1,0 +1,8 @@
+<div id="<%= dom_id(task) %>" class="task-card">
+  <strong><%= task.title %></strong>
+  <p><%= task.description %></p>
+  <% if task.duration_estimate.present? %>
+    <span class="badge">Est: <%= task.duration_estimate %></span>
+  <% end %>
+  <%= button_to "Delete", task, method: :delete, form: { data: { turbo_confirm: "Delete this task?" } } %>
+</div>
