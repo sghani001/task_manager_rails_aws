@@ -1,6 +1,22 @@
-<%= form_with model: task do |f| %>
-  <%= f.text_field :title, placeholder: "Task title..." %>
-  <%= f.text_area :description, placeholder: "Description..." %>
-  <%= f.hidden_field :status, value: "todo" %>
-  <%= f.submit "Add Task" %>
-<% end %>
+<div class="task-form-card">
+  <h2>New task</h2>
+  <p class="form-note">Add a task and it will appear in your To Do column.</p>
+
+  <%= form_with model: task, html: { class: "task-form" } do |f| %>
+    <div class="field">
+      <%= f.label :title, "Title" %>
+      <%= f.text_field :title, placeholder: "Task title...", class: "input-field" %>
+    </div>
+
+    <div class="field">
+      <%= f.label :description, "Description" %>
+      <%= f.text_area :description, placeholder: "Description...", class: "input-field" %>
+    </div>
+
+    <%= f.hidden_field :status, value: "todo" %>
+
+    <div class="form-actions">
+      <%= f.submit "Add Task", class: "button primary" %>
+    </div>
+  <% end %>
+</div>

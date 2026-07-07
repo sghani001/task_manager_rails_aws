@@ -1,16 +1,35 @@
-<h1>Task Manager</h1>
-
-<%= turbo_stream_from "tasks_#{current_user.id}" %>
-
-<%= render "form", task: Task.new %>
-
-<div class="task-board">
-  <% %w[todo in_progress completed].each do |status| %>
-    <div class="task-column">
-      <h2><%= status.humanize %></h2>
-      <turbo-frame id="tasks_<%= status %>">
-        <%= render @tasks.where(status: status) %>
-      </turbo-frame>
+<main class="task-manager">
+  <header class="task-header">
+    <div>
+      <p class="eyebrow">Task Manager</p>
+      <h1>Organize your work in one place</h1>
+      <p class="subtitle">Create tasks, track progress, and keep your team in sync with a lightweight board.</p>
     </div>
-  <% end %>
-</div>
+    <div class="user-badge">Hello, Demo User</div>
+  </header>
+
+  <%= turbo_stream_from "tasks_#{current_user.id}" %>
+
+  <section class="task-form-panel">
+    <%= render "form", task: Task.new %>
+  </section>
+
+  <section class="task-board">
+    <% %w[todo in_progress completed].each do |status| %>
+      <div class="task-column">
+        <div class="column-header">
+          <h2><%= status.humanize %></h2>
+          <span class="column-tag"><%= @tasks.where(status: status).count %></span>
+        </div>
+        <turbo-frame id="tasks_<%= status %>">
+          <% tasks = @tasks.where(status: status) %>
+          <% if tasks.any? %>
+            <%= render tasks %>
+          <% else %>
+            <p class="empty-state">No tasks in this column yet.</p>
+          <% end %>
+        </turbo-frame>
+      </div>
+    <% end %>
+  </section>
+</main>
