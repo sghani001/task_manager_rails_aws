@@ -1,2 +1,5 @@
 <%= turbo_stream.prepend "tasks_todo", @task %>
 <%= turbo_stream.replace "new_task", partial: "tasks/form", locals: { task: Task.new } %>
+<%= turbo_stream.replace "count_todo" do %>
+  <span id="count_todo" class="column-tag"><%= Task.where(status: "todo", user_id: @task.user_id).count %></span>
+<% end %>

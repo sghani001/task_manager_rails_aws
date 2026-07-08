@@ -17,6 +17,7 @@ class TasksController < ApplicationController
   end
 
   def update
+    @old_status = @task.status
     @task.update(task_params)
     respond_to do |format|
       format.turbo_stream

@@ -14,12 +14,12 @@
     <%= render "form", task: Task.new %>
   </section>
 
-  <section class="task-board">
+  <section class="task-board" data-controller="task-board">
     <% %w[todo in_progress completed].each do |status| %>
-      <div class="task-column">
+      <div class="task-column" data-task-board-target="column" data-status="<%= status %>" data-action="dragover->task-board#dragOver dragenter->task-board#dragEnter dragleave->task-board#dragLeave drop->task-board#drop">
         <div class="column-header">
           <h2><%= status.humanize %></h2>
-          <span class="column-tag"><%= @tasks.where(status: status).count %></span>
+          <span id="count_<%= status %>" class="column-tag"><%= @tasks.where(status: status).count %></span>
         </div>
         <turbo-frame id="tasks_<%= status %>">
           <% tasks = @tasks.where(status: status) %>

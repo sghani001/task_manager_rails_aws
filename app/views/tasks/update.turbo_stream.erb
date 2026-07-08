@@ -1,0 +1,20 @@
+<% if @old_status && @old_status != @task.status %>
+  <% user_tasks = Task.where(user_id: @task.user_id) %>
+  <% [@old_status, @task.status].uniq.each do |s| %>
+    <% column_tasks = user_tasks.where(status: s) %>
+    <%= turbo_stream.replace "tasks_#{s}" do %>
+      <turbo-frame id="tasks_<%= s %>">
+        <% if column_tasks.any? %>
+          <%= render column_tasks %>
+        <% else %>
+          <p class="empty-state">No tasks in this column yet.</p>
+        <% end %>
+      </turbo-frame>
+    <% end %>
+    <%= turbo_stream.replace "count_#{s}" do %>
+      <span id="count_<%= s %>" class="column-tag"><%= column_tasks.count %></span>
+    <% end %>
+  <% end %>
+<% else %>
+  <%= turbo_stream.replace dom_id(@task), @task %>
+<% end %>

@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   private
 
   def current_user
-    @_current_user ||= User.first_or_create!(email: "demo@example.com")
+    @_current_user ||= User.find_or_create_by!(email: "demo@example.com") do |user|
+      user.password = "password"
+    end
   end
 end

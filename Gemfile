@@ -18,17 +18,18 @@ gem "stimulus-rails"
 gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-# gem "bcrypt", "~> 3.1.7"
+gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
 
 # Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
-# Gemfile
-gem "solid_queue" # Rails 7.1+ built-in, simplest option — or gem "sidekiq" if you prefer Redis-backed
-gem "solid_cache"
 gem "solid_queue"
+gem "solid_cache"
 gem "solid_cable"
+
+# Mission Control for job monitoring
+gem "mission_control-jobs"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false

@@ -1,0 +1,4 @@
+<%= turbo_stream.remove dom_id(@task) %>
+<%= turbo_stream.replace "count_#{@task.status}" do %>
+  <span id="count_<%= @task.status %>" class="column-tag"><%= Task.where(status: @task.status, user_id: @task.user_id).count %></span>
+<% end %>

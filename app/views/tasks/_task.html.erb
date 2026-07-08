@@ -1,4 +1,4 @@
-<div id="<%= dom_id(task) %>" class="task-card">
+<div id="<%= dom_id(task) %>" class="task-card" draggable="true" data-task-id="<%= task.id %>" data-action="dragstart->task-board#dragStart dragend->task-board#dragEnd">
   <div class="task-card-header">
     <strong><%= task.title %></strong>
     <span class="status-pill"><%= task.status.humanize %></span>
@@ -7,10 +7,25 @@
   <p class="task-description"><%= task.description %></p>
 
   <div class="task-card-footer">
-    <% if task.duration_estimate.present? %>
-      <span class="badge">Est: <%= task.duration_estimate %></span>
-    <% end %>
+    <div class="task-card-actions">
+      <% if task.status == "todo" %>
+        <%= button_to "In Progress", task, method: :patch, params: { task: { status: "in_progress" } }, class: "button small" %>
+      <% elsif task.status == "in_progress" %>
+        <%= button_to "To Do", task, method: :patch, params: { task: { status: "todo" } }, class: "button small" %>
+        <%= button_to "Complete", task, method: :patch, params: { task: { status: "completed" } }, class: "button small primary" %>
+      <% elsif task.status == "completed" %>
+        <%= button_to "Reopen", task, method: :patch, params: { task: { status: "in_progress" } }, class: "button small" %>
+      <% end %>
+    </div>
 
-    <%= button_to "Delete", task, method: :delete, class: "button secondary", form: { data: { turbo_confirm: "Delete this task?" } } %>
+    <div class="task-card-meta">
+      <% if task.processing_status == "estimating" %>
+        <span class="badge badge-processing">⏳ Estimating duration...</span>
+      <% elsif task.duration_estimate.present? %>
+        <span class="badge badge-success">✓ Est: <%= task.duration_estimate %></span>
+      <% end %>
+
+      <%= button_to "Delete", task, method: :delete, class: "button secondary small", form: { data: { turbo_confirm: "Delete this task?" } } %>
+    </div>
   </div>
 </div>
