@@ -88,10 +88,23 @@ git clone <repo-url>
 cd task_manager
 bundle install
 rails db:create db:migrate db:seed
+```
+
+### Run
+
+```bash
+bin/dev
+```
+
+Or equivalently:
+
+```bash
 rails server
 ```
 
-Visit `http://localhost:3000`. The app auto-creates a demo user (`demo@example.com` / `password`).
+Visit **http://localhost:3000**. The app auto-creates a demo user (`demo@example.com` / `password`) on first visit — no sign-up needed.
+
+> **Note:** In development, background jobs (e.g., duration estimation) run **in-process** via the `:async` adapter. No separate worker process is needed.
 
 ### Running Tests
 
