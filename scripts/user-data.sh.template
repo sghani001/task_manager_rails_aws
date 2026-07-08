@@ -1,0 +1,44 @@
+#!/bin/bash
+set -x
+exec > >(tee /var/log/task-manager-deploy.log)
+exec 2>&1
+
+dnf update -y
+dnf install -y docker git postgresql15
+systemctl enable docker
+systemctl start docker
+
+# Add swap (t3.micro has only 1GB RAM — native gem compilation OOMs without it)
+dd if=/dev/zero of=/swapfile bs=1M count=512 status=progress
+chmod 600 /swapfile
+mkswap /swapfile
+swapon /swapfile
+echo '/swapfile none swap sw 0 0' >> /etc/fstab
+
+PGPASSWORD=__DB_PASSWORD__ psql -h __DB_ENDPOINT__ -U taskadmin -d postgres -c "
+  DO \$\$
+  BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'task_manager') THEN
+      CREATE ROLE task_manager LOGIN PASSWORD '__DB_PASSWORD__';
+    END IF;
+  END
+  \$\$;
+  ALTER ROLE task_manager CREATEDB;
+"
+
+git clone https://github.com/sghani001/task_manager_rails_aws.git /opt/task_manager
+cd /opt/task_manager
+docker build -t task_manager .
+
+docker run -d --name task_manager \
+  -p 80:80 \
+  -e RAILS_MASTER_KEY=__RAILS_MASTER_KEY__ \
+  -e DATABASE_URL="postgres://taskadmin:__DB_PASSWORD__@__DB_ENDPOINT__:5432/task_manager_production?sslmode=require" \
+  -e TASK_MANAGER_DATABASE_PASSWORD=__DB_PASSWORD__ \
+  -e DATABASE_HOST=__DB_ENDPOINT__ \
+  -e MISSION_CONTROL_USERNAME=admin \
+  -e MISSION_CONTROL_PASSWORD=__DB_PASSWORD__ \
+  -e PGSSLMODE=require \
+  -e RAILS_LOG_LEVEL=info \
+  --restart unless-stopped \
+  task_manager
