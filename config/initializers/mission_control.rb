@@ -9,6 +9,6 @@ if Rails.env.development?
   end
 else
   # Enable HTTP Basic Auth for production
-  MissionControl::Jobs.username = ENV.fetch("MISSION_CONTROL_USERNAME")
-  MissionControl::Jobs.password = ENV.fetch("MISSION_CONTROL_PASSWORD")
+  MissionControl::Jobs.http_basic_auth_user = ENV.fetch("MISSION_CONTROL_USERNAME")
+  MissionControl::Jobs.http_basic_auth_password = ENV.fetch("MISSION_CONTROL_PASSWORD")
 end
