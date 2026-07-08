@@ -25,9 +25,12 @@
 
   <body>
     <% if flash.any? %>
-      <div class="flash-container">
+      <div id="flash-container" class="flash-container">
         <% flash.each do |type, msg| %>
-          <div class="flash <%= type %>"><%= msg %></div>
+          <div id="flash_<%= type %>" class="flash <%= type %>">
+            <%= msg %>
+            <span class="flash-progress"></span>
+          </div>
         <% end %>
       </div>
     <% end %>

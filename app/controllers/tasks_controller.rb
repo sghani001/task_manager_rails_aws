@@ -10,6 +10,9 @@ class TasksController < ApplicationController
     @task = current_user.tasks.new(task_params)
     if @task.save
       TaskDurationEstimateJob.perform_later(@task.id)
+      flash.now[:notice] = "Task created"
+    else
+      flash.now[:alert] = @task.errors.full_messages.to_sentence
     end
     respond_to do |format|
       format.turbo_stream
@@ -19,7 +22,11 @@ class TasksController < ApplicationController
 
   def update
     @old_status = @task.status
-    @task.update(task_params)
+    if @task.update(task_params)
+      flash.now[:notice] = "Task updated"
+    else
+      flash.now[:alert] = @task.errors.full_messages.to_sentence
+    end
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to tasks_path }
@@ -27,7 +34,11 @@ class TasksController < ApplicationController
   end
 
   def destroy
-    @task.destroy
+    if @task.destroy
+      flash.now[:notice] = "Task deleted"
+    else
+      flash.now[:alert] = "Failed to delete task"
+    end
     respond_to do |format|
       format.turbo_stream
       format.html { redirect_to tasks_path }
@@ -37,7 +48,11 @@ class TasksController < ApplicationController
   private
 
   def set_task
-    @task = Task.find(params[:id])
+    @task = current_user.tasks.find(params[:id])
+  rescue ActiveRecord::RecordNotFound
+    flash[:alert] = "Task not found or unauthorized"
+    redirect_to tasks_path
+    throw :abort
   end
 
   def task_params

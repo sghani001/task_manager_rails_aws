@@ -2,3 +2,15 @@
 <%= turbo_stream.replace "count_#{@task.status}" do %>
   <span id="count_<%= @task.status %>" class="column-tag"><%= Task.where(status: @task.status, user_id: @task.user_id).count %></span>
 <% end %>
+<% if flash[:notice] || flash[:alert] %>
+<%= turbo_stream.replace "flash-container" do %>
+<div id="flash-container" class="flash-container">
+  <% flash.each do |type, msg| %>
+    <div id="flash_<%= type %>" class="flash <%= type %>">
+      <%= msg %>
+      <span class="flash-progress"></span>
+    </div>
+  <% end %>
+</div>
+<% end %>
+<% end %>

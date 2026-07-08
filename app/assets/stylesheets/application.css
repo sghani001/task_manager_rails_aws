@@ -353,15 +353,18 @@ button {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  pointer-events: none;
 }
 
 .flash {
+  position: relative;
+  overflow: hidden;
   padding: 0.85rem 1.5rem;
   border-radius: 14px;
   font-weight: 600;
   font-size: 0.95rem;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
-  animation: flash-in 300ms ease;
+  animation: flash-in 300ms ease, flash-out 500ms ease 9.5s forwards;
 }
 
 .flash.notice {
@@ -374,9 +377,36 @@ button {
   color: #991b1b;
 }
 
+.flash-progress {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  border-radius: 0 0 0 14px;
+  animation: progress-shrink 10s linear forwards;
+}
+
+.flash.notice .flash-progress {
+  background: rgba(6, 95, 70, 0.2);
+}
+
+.flash.alert .flash-progress {
+  background: rgba(153, 27, 27, 0.2);
+}
+
 @keyframes flash-in {
   from { opacity: 0; transform: translateY(-0.5rem); }
   to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes flash-out {
+  from { opacity: 1; max-height: 60px; margin-bottom: 0.5rem; padding-top: 0.85rem; padding-bottom: 0.85rem; }
+  to   { opacity: 0; max-height: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; }
+}
+
+@keyframes progress-shrink {
+  from { width: 100%; }
+  to   { width: 0%; }
 }
 
 /* Auth pages */
