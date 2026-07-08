@@ -24,6 +24,21 @@
   </head>
 
   <body>
+    <% if flash.any? %>
+      <div class="flash-container">
+        <% flash.each do |type, msg| %>
+          <div class="flash <%= type %>"><%= msg %></div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <% if logged_in? %>
+      <nav class="top-nav">
+        <span class="nav-user"><%= current_user.email %></span>
+        <%= button_to "Sign out", logout_path, method: :delete, class: "button small secondary" %>
+      </nav>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

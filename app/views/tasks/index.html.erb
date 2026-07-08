@@ -5,7 +5,7 @@
       <h1>Organize your work in one place</h1>
       <p class="subtitle">Create tasks, track progress, and keep your team in sync with a lightweight board.</p>
     </div>
-    <div class="user-badge">Hello, Demo User</div>
+    <div class="user-badge"><%= current_user.email %></div>
   </header>
 
   <%= turbo_stream_from "tasks_#{current_user.id}" %>

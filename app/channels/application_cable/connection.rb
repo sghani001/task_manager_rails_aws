@@ -9,10 +9,14 @@ module ApplicationCable
     private
 
     def find_verified_user
-      # For development, use the same demo user as the web app
-      # In production, you'd authenticate via cookies/session
-      User.find_or_create_by!(email: "demo@example.com") do |user|
-        user.password = "password"
+      if (user_id = request.session["user_id"])
+        User.find_by(id: user_id) || reject_unauthorized_connection
+      elsif Rails.env.development?
+        email = ENV.fetch("SEED_USER_EMAIL", "demo@example.com")
+        password = ENV.fetch("SEED_USER_PASSWORD", "password")
+        User.find_or_create_by!(email: email) { |u| u.password = password }
+      else
+        reject_unauthorized_connection
       end
     end
   end

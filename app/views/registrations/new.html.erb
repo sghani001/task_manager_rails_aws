@@ -1,0 +1,29 @@
+<main class="auth-page">
+  <div class="auth-card">
+    <h1>Sign up</h1>
+    <p class="form-note">Create an account to start managing tasks.</p>
+
+    <%= form_with model: @user, url: signup_path, class: "auth-form" do |f| %>
+      <div class="field">
+        <%= f.label :email %>
+        <%= f.email_field :email, placeholder: "you@example.com", class: "input-field", autofocus: true %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password %>
+        <%= f.password_field :password, placeholder: "Create a password", class: "input-field" %>
+      </div>
+
+      <div class="field">
+        <%= f.label :password_confirmation, "Confirm password" %>
+        <%= f.password_field :password_confirmation, placeholder: "Re-enter your password", class: "input-field" %>
+      </div>
+
+      <div class="form-actions">
+        <%= f.submit "Sign up", class: "button primary" %>
+      </div>
+    <% end %>
+
+    <p class="auth-alt">Already have an account? <%= link_to "Sign in", login_path %>.</p>
+  </div>
+</main>
