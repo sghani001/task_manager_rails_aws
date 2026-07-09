@@ -11,7 +11,7 @@
 
 set -euo pipefail
 
-RAILS_MASTER_KEY="b810523f70a77df261697136e2c0c922"
+RAILS_MASTER_KEY=""
 DB_PASSWORD="admin123"
 RDS_ENDPOINT="task-manager-db.cadse68kcrrx.us-east-1.rds.amazonaws.com"
 
