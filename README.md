@@ -5,7 +5,7 @@
 <br/>
 
 [![Rails Version](https://img.shields.io/badge/Rails-8.1.3-CC0000?style=for-the-badge&logo=ruby-on-rails&logoColor=white)](https://rubyonrails.org/)
-[![Ruby Version](https://img.shields.io/badge/Ruby-3.x-CC0000?style=for-the-badge&logo=ruby&logoColor=white)](https://www.ruby-lang.org/)
+[![Ruby Version](https://img.shields.io/badge/Ruby-3.3.11-CC0000?style=for-the-badge&logo=ruby&logoColor=white)](https://www.ruby-lang.org/)
 [![Database](https://img.shields.io/badge/PostgreSQL-Active-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
 
 <br/>
@@ -94,7 +94,7 @@ Turbo::StreamsChannel.broadcast_replace_to(
 
 ### Prerequisites
 
-* **Ruby:** `^3.x`
+* **Ruby:** `^3.3.11`
 * **Database:** `PostgreSQL`
 * **Dependency Manager:** `Bundler`
 
